@@ -1,44 +1,4 @@
 package com.example.calmly.player
-//
-//import android.content.Context
-//import androidx.annotation.RawRes
-//import androidx.media3.common.MediaItem
-//import androidx.media3.exoplayer.ExoPlayer
-//import androidx.media3.datasource.RawResourceDataSource
-//
-//class SoundPlayerManager {
-//    private var exoPlayer: ExoPlayer? = null
-//    private var currentResId: Int? = null
-//
-//    fun play(context: Context, @RawRes resId: Int) {
-//        if (currentResId == resId) {
-//            pause()
-//            return
-//        }
-//        release()
-//
-//        exoPlayer = ExoPlayer.Builder(context).build().apply {
-//            val mediaUri = RawResourceDataSource.buildRawResourceUri(resId)
-//            val mediaItem = MediaItem.fromUri(mediaUri)
-//
-//            setMediaItem(mediaItem)
-//            repeatMode = ExoPlayer.REPEAT_MODE_ONE
-//            prepare()
-//            play()
-//        }
-//        currentResId = resId
-//    }
-//
-//    fun pause() {
-//        exoPlayer?.pause()
-//    }
-//
-//    fun release() {
-//        exoPlayer?.release()
-//        exoPlayer = null
-//        currentResId = null
-//    }
-//}
 
 
 import android.content.Context
