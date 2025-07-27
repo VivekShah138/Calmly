@@ -11,6 +11,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.calmly.navigation.Screens
+import com.example.calmly.presentation.components.MeditationScreen
+import com.example.calmly.presentation.components.SleepScreen
 import com.example.calmly.ui.theme.CalmlyTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,9 +25,23 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CalmlyTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = Screens.MeditationScreen
+                ){
+                    composable<Screens.MeditationScreen>{
+                        MeditationScreen(
+                            navController = navController
+                        )
+                    }
+                    composable<Screens.SleepScreen> {
+                        SleepScreen(
+                            navController = navController
+                        )
+                    }
                 }
+
             }
         }
     }
