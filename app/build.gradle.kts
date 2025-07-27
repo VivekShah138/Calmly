@@ -85,10 +85,14 @@ dependencies {
     // KSP dependency for Room compiler
     ksp(libs.androidx.room.compiler)
 
-    // ExoPlayer for audio playback
-    implementation("com.google.android.exoplayer:exoplayer:2.20.0")
+    // Media3 ExoPlayer
+    implementation("androidx.media3:media3-exoplayer:1.1.0")
 
-    // Media (MediaSession + Media style notifications)
-    implementation("androidx.media:media:1.6.0")
+    // Media3 Common (for MediaItem, etc)
+    implementation("androidx.media3:media3-common:1.1.0")
+
+    // Optional: Media3 UI if you want player UI components
+    implementation("androidx.media3:media3-ui:1.1.0")
+
 
 }
