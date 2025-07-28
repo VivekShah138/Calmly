@@ -6,6 +6,8 @@ import androidx.annotation.RawRes
 data class Sound(
     val id: Int,
     val title: String,
-    @RawRes val resId: Int,
-    @DrawableRes val thumbnail: Int
+    val resId: Int,
+    val thumbnail: Int,
+    val duration: Int,
+    val fav: Boolean
 )
