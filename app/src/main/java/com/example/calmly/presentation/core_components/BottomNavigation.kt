@@ -1,11 +1,6 @@
-package com.example.calmly.navigation
+package com.example.calmly.presentation.core_components
 
-import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.NightsStay
-import androidx.compose.material.icons.filled.Spa
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.HorizontalDivider
@@ -23,32 +18,13 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
-
-data class BottomNavScreen(
-    val screen: Screens,
-    val title: String,
-    val icon: ImageVector
-)
-
-val BOTTOM_NAV_DESTINATION = listOf(
-    BottomNavScreen(
-        screen = Screens.MeditationScreen,
-        title = "Meditation",
-        icon = Icons.Filled.Spa
-    ),
-    BottomNavScreen(
-        screen = Screens.SleepScreen,
-        title = "Sleep",
-        icon = Icons.Filled.NightsStay
-    )
-)
-
-
+import com.example.calmly.navigation.TOP_LEVEL_DESTINATION
+import com.example.calmly.navigation.TopLevelDestination
 
 @Composable
 fun BottomNavigationBar(
     navController: NavController,
-    items: List<BottomNavScreen> = BOTTOM_NAV_DESTINATION,
+    items: List<TopLevelDestination> = TOP_LEVEL_DESTINATION,
     containerColor: Color = MaterialTheme.colorScheme.background
 ) {
 
@@ -76,7 +52,6 @@ fun BottomNavigationBar(
                                 saveState = true
                             }
                             launchSingleTop = true
-//                        restoreState = true
                         }
                     },
                     icon = {

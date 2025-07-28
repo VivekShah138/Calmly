@@ -1,4 +1,4 @@
-package com.example.calmly.presentation.components
+package com.example.calmly.presentation.features.view_songs.components
 
 
 import androidx.compose.foundation.Image
@@ -25,59 +25,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.calmly.R
 import com.example.calmly.domain.local.model.Sound
-import androidx.compose.material.icons.filled.Schedule
+
 
 @Composable
 fun SoundCard(
-    sound: Sound,
-    isPlaying: Boolean,
-    onPlayPauseClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .background(MaterialTheme.colorScheme.surface)
-            .clickable { onPlayPauseClick() }
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Image(
-            painter = painterResource(id = sound.thumbnail),
-            contentDescription = sound.title,
-            modifier = Modifier
-                .size(64.dp)
-                .clip(RoundedCornerShape(12.dp)),
-            contentScale = ContentScale.Crop
-        )
-
-        Spacer(modifier = Modifier.width(16.dp))
-
-        Text(
-            text = sound.title,
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.weight(1f)
-        )
-
-        IconButton(onClick = onPlayPauseClick) {
-            if (isPlaying) {
-                Icon(
-                    imageVector = Icons.Default.Pause,
-                    contentDescription = "Pause",
-                    modifier = Modifier.size(32.dp)
-                )
-            } else {
-                Icon(
-                    imageVector = Icons.Default.PlayArrow,
-                    contentDescription = "Play"
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun SoundCard2(
     sound: Sound,
     isPlaying: Boolean,
     onPlayPauseClick: () -> Unit,
@@ -105,11 +56,11 @@ fun SoundCard2(
 
         Column(
             modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.Center  // **center text and duration vertically as a group**
+            verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = sound.title,
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
             )
             DurationBadge(sound.duration)
         }
@@ -144,7 +95,7 @@ fun SoundCard2(
 @Preview
 @Composable
 fun SoundCardPreview(){
-    SoundCard2(
+    SoundCard(
         Sound(
             id = 1,
             title = "Forest",
@@ -158,33 +109,5 @@ fun SoundCardPreview(){
 
         }
     )
-}
-
-
-
-
-@Composable
-fun DurationBadge(durationSeconds: Int) {
-    val minutes = durationSeconds / 60
-    val seconds = durationSeconds % 60
-    val durationFormatted = "%d:%02d".format(minutes, seconds)
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(
-            imageVector = Icons.Filled.Schedule,
-            contentDescription = "Duration",
-            modifier = Modifier.size(14.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            text = durationFormatted,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.offset(y = 0.5.dp)
-        )
-    }
 }
 

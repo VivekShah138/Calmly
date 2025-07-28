@@ -1,4 +1,4 @@
-package com.example.calmly.presentation.components
+package com.example.calmly.presentation.features.view_songs.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,20 +12,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.example.calmly.data.local.data_source.SoundDataSource
 import com.example.calmly.mapper.SoundMapper
-import com.example.calmly.navigation.BottomNavigationBar
-import com.example.calmly.presentation.viewmodel.SharedPlayerViewModel
-import org.koin.compose.viewmodel.koinViewModel
+import com.example.calmly.presentation.core_components.AppTopBar
+import com.example.calmly.presentation.features.view_songs.viewmodel.SharedPlayerViewModel
 
 @Composable
 fun MeditationScreen(
     navController: NavController,
-    viewModel: SharedPlayerViewModel = koinViewModel()
+    viewModel: SharedPlayerViewModel
 ) {
     val context = LocalContext.current
     val currentPlayingSoundId by viewModel.currentPlayingSoundId.collectAsState()
     val isPlaying by viewModel.isPlaying.collectAsState()
-
-//    val sounds = SoundDataSource.meditationSounds
 
     val sounds = SoundDataSource.meditationSounds.map {
         SoundMapper.responseToDomain(
@@ -34,12 +31,18 @@ fun MeditationScreen(
         )
     }
 
-    Scaffold(bottomBar = {
-        BottomNavigationBar(navController = navController)
-    }) { innerPadding ->
-        LazyColumn(modifier = Modifier.padding(innerPadding)) {
+    Scaffold(
+        topBar = {
+            AppTopBar(
+                title = "Meditation"
+            )
+        },
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier.padding(innerPadding)
+        ) {
             items(sounds) { sound ->
-                SoundCard2(
+                SoundCard(
                     sound = sound,
                     isPlaying = (currentPlayingSoundId == sound.id && isPlaying),
                     onPlayPauseClick = { viewModel.onPlayPauseClicked(sound) }
