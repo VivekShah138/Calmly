@@ -66,10 +66,22 @@ class GetSoundViewModel(
                     if (playerManager.isPlaying.value) {
                         playerManager.pause()
                     } else {
-                        playerManager.play(event.sound.resId, event.sound.id)
+                        playerManager.play(
+                            soundResId = event.sound.resId,
+                            soundId = event.sound.id,
+                            artist = event.sound.author,
+                            title = event.sound.title,
+                            artworkResId = event.sound.thumbnail
+                        )
                     }
                 } else {
-                    playerManager.play(event.sound.resId, event.sound.id)
+                    playerManager.play(
+                        soundResId = event.sound.resId,
+                        soundId = event.sound.id,
+                        artist = event.sound.author,
+                        title = event.sound.title,
+                        artworkResId = event.sound.thumbnail
+                    )
                 }
 
                 _uiState.update { it.copy(lastPlayedSound = event.sound) }
@@ -85,9 +97,15 @@ class GetSoundViewModel(
                     playerManager.pause()
                 } else {
                     val toPlay = lastSound ?: allSounds.find { it.id == currentId }
-                    toPlay?.let {
-                        playerManager.play(it.resId, it.id)
-                        _uiState.update { state -> state.copy(lastPlayedSound = it) }
+                    toPlay?.let { sound ->
+                        playerManager.play(
+                            soundResId = sound.resId,
+                            soundId = sound.id,
+                            artist = sound.author,
+                            title = sound.title,
+                            artworkResId = sound.thumbnail
+                        )
+                        _uiState.update { state -> state.copy(lastPlayedSound = sound) }
                     }
                 }
             }

@@ -26,8 +26,6 @@ class SoundPlayerManager private constructor(private val context: Context) {
 
                 _isPlaying.value = playing
                 Log.d("SoundPlayerManager", "Playback state changed: isPlaying=$playing, uri=$currentUri")
-                Log.d("SoundPlayerManager", "Playback state changed: isPlayingState=${_isPlaying.value}, uri=$currentUri")
-
             }
         }
     }
@@ -46,34 +44,34 @@ class SoundPlayerManager private constructor(private val context: Context) {
     }
 
 
-    fun play(soundResId: Int, soundId: Int) {
+    fun play(
+        soundResId: Int,
+        soundId: Int,
+        title: String,
+        artist: String,
+        artworkResId: Int
+    ) {
         if (_currentPlayingSoundId.value == soundId) {
-            // Already playing, resume if needed
-            sendCommand(MediaPlayerService.ACTION_PLAY, soundResId)
+
+            sendCommand(MediaPlayerService.ACTION_PLAY, soundResId, title, artist, artworkResId)
             return
         }
 
-
         _currentPlayingSoundId.value = soundId
-        sendCommand(MediaPlayerService.ACTION_PLAY, soundResId)
+        sendCommand(MediaPlayerService.ACTION_PLAY, soundResId, title, artist, artworkResId)
     }
 
     fun pause() {
         sendCommand(MediaPlayerService.ACTION_PAUSE)
     }
 
-    fun stop() {
-        _currentPlayingSoundId.value = null
-        sendCommand(MediaPlayerService.ACTION_STOP)
-    }
-
-    fun isPlaying(soundId: Int): Boolean {
-        // We assume it's playing if soundId matches and not null
-        return _currentPlayingSoundId.value == soundId
-    }
-
-
-    private fun sendCommand(action: String, soundResId: Int? = null) {
+    private fun sendCommand(
+        action: String,
+        soundResId: Int? = null,
+        title: String? = null,
+        artist: String? = null,
+        artworkResId: Int? = null
+    ) {
         val intent = Intent(context, MediaPlayerService::class.java).apply {
             this.action = action
             soundResId?.let {
@@ -82,15 +80,21 @@ class SoundPlayerManager private constructor(private val context: Context) {
                     "android.resource://${context.packageName}/$it"
                 )
             }
+            title?.let { putExtra(MediaPlayerService.EXTRA_TITLE, it) }
+            artist?.let { putExtra(MediaPlayerService.EXTRA_ARTIST, it) }
+            artworkResId?.let { putExtra(MediaPlayerService.EXTRA_ARTWORK, it) }
         }
         context.startService(intent)
     }
 
     companion object {
-        @Volatile private var INSTANCE: SoundPlayerManager? = null
+        @Volatile
+        private var INSTANCE: SoundPlayerManager? = null
+
         fun getInstance(context: Context): SoundPlayerManager =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: SoundPlayerManager(context.applicationContext).also { INSTANCE = it }
             }
     }
 }
+
