@@ -5,62 +5,91 @@ import androidx.lifecycle.viewModelScope
 import com.example.calmly.domain.local.model.Sound
 import com.example.calmly.domain.local.usecases.GetSoundUseCaseWrapper
 import com.example.calmly.player.SoundPlayerManager
+import com.example.calmly.presentation.features.view_songs.events.GetSoundEvents
+import com.example.calmly.presentation.features.view_songs.states.GetSoundStates
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 class GetSoundViewModel(
     val playerManager: SoundPlayerManager,
     private val getSoundUseCaseWrapper: GetSoundUseCaseWrapper
 ) : ViewModel() {
 
-    val currentPlayingSoundId: StateFlow<Int?> =
-        playerManager.currentPlayingSoundId
-            .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+    private val _uiState = MutableStateFlow(GetSoundStates())
+    val uiState: StateFlow<GetSoundStates> = _uiState.asStateFlow()
 
-    val isPlaying: StateFlow<Boolean> =
-        playerManager.isPlaying
-            .stateIn(viewModelScope, SharingStarted.Eagerly, false)
-
-
-    private var lastPlayedSound: Sound? = null
-
-    private var allSounds: List<Sound> = emptyList()
-
-    val currentSound: StateFlow<Sound?> = currentPlayingSoundId
-        .map { id -> allSounds.find { it.id == id } }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
-
-
-    fun setAllSounds(sounds: List<Sound>) {
-        allSounds = sounds
+    init {
+        observePlayerState()
+        setAllSounds()
     }
 
-    fun onPlayPauseClicked(sound: Sound) {
-        val isSameSound = playerManager.currentPlayingSoundId.value == sound.id
-        lastPlayedSound = sound
-
-        if (isSameSound) {
-            if (playerManager.isPlaying.value) {
-                playerManager.pause()
-            } else {
-                playerManager.play(sound.resId, sound.id)
-            }
-        } else {
-            playerManager.play(sound.resId, sound.id)
+    private fun observePlayerState() {
+        viewModelScope.launch {
+            combine(
+                playerManager.isPlaying, playerManager.currentPlayingSoundId
+            ) { isPlaying, id ->
+                val currentSound = _uiState.value.allSounds.find { it.id == id }
+                _uiState.update {
+                    it.copy(
+                        isPlaying = isPlaying,
+                        currentPlayingSoundId = id,
+                        currentSound = currentSound
+                    )
+                }
+            }.collect()
         }
     }
 
-    fun togglePlayback() {
-        val isPlaying = playerManager.isPlaying.value
-        val currentSoundId = playerManager.currentPlayingSoundId.value
+    private fun setAllSounds() {
+        viewModelScope.launch {
+            val allSounds = getSoundUseCaseWrapper.getAllSoundsUseCase()
+            val sleepSounds = getSoundUseCaseWrapper.getSleepSoundUseCase()
+            val meditationSounds = getSoundUseCaseWrapper.getMeditationSoundUseCase()
+            _uiState.update {
+                it.copy(
+                    allSounds = allSounds,
+                    meditationSounds = meditationSounds,
+                    sleepSounds = sleepSounds
+                )
+            }
+        }
 
-        if (isPlaying) {
-            playerManager.pause()
-        } else {
-            val sound = lastPlayedSound ?: allSounds.find { it.id == currentSoundId }
+    }
 
-            sound?.let {
-                playerManager.play(it.resId, it.id)
-                lastPlayedSound = it
+    fun onEvent(event: GetSoundEvents) {
+        when (event) {
+            is GetSoundEvents.PlayPauseClicked -> {
+                val currentId = playerManager.currentPlayingSoundId.value
+                val isSame = currentId == event.sound.id
+
+                if (isSame) {
+                    if (playerManager.isPlaying.value) {
+                        playerManager.pause()
+                    } else {
+                        playerManager.play(event.sound.resId, event.sound.id)
+                    }
+                } else {
+                    playerManager.play(event.sound.resId, event.sound.id)
+                }
+
+                _uiState.update { it.copy(lastPlayedSound = event.sound) }
+            }
+
+            is GetSoundEvents.TogglePlayback -> {
+                val isPlaying = playerManager.isPlaying.value
+                val currentId = playerManager.currentPlayingSoundId.value
+                val allSounds = _uiState.value.allSounds
+                val lastSound = _uiState.value.lastPlayedSound
+
+                if (isPlaying) {
+                    playerManager.pause()
+                } else {
+                    val toPlay = lastSound ?: allSounds.find { it.id == currentId }
+                    toPlay?.let {
+                        playerManager.play(it.resId, it.id)
+                        _uiState.update { state -> state.copy(lastPlayedSound = it) }
+                    }
+                }
             }
         }
     }

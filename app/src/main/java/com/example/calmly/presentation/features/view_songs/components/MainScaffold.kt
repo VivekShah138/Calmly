@@ -16,6 +16,7 @@ import com.example.calmly.data.local.data_source.SoundDataSource
 import com.example.calmly.mapper.SoundMapper
 import com.example.calmly.navigation.CalmNavHost
 import com.example.calmly.presentation.core_components.BottomNavigationBar
+import com.example.calmly.presentation.features.view_songs.events.GetSoundEvents
 import com.example.calmly.presentation.features.view_songs.viewmodel.GetSoundViewModel
 
 @Composable
@@ -24,35 +25,20 @@ fun MainScaffold(
     viewModel: GetSoundViewModel,
 ) {
 
-    val context = LocalContext.current
-
-    // Map raw SoundData to domain Sound using context only once
-    val allSounds = remember {
-        (SoundDataSource.meditationSounds + SoundDataSource.sleepSounds).map {
-            SoundMapper.responseToDomain(context = context, soundData = it)
-        }
-    }
-
-    // Tell ViewModel about mapped sounds once when 'allSounds' changes (only once here)
-    LaunchedEffect(allSounds) {
-        viewModel.setAllSounds(allSounds)
-    }
-
-    val currentPlayingSoundId by viewModel.currentPlayingSoundId.collectAsState()
-    val isPlaying by viewModel.isPlaying.collectAsState()
-//    val soundName by viewModel.currentSoundName.collectAsState()
-    val currentSound by viewModel.currentSound.collectAsState()
+    val states by viewModel.uiState.collectAsState()
 
     Scaffold(
         bottomBar = {
             Column {
-                if (currentPlayingSoundId != null) {
+                if (states.currentPlayingSoundId != null) {
                     NowPlayingBar(
-                        soundName = currentSound?.title ?: "Now Playing",
-                        isPlaying = isPlaying,
-                        onPlayPauseClick = viewModel::togglePlayback,
-                        soundThumbnailResId = currentSound?.thumbnail ?: 0,
-                        soundAuthor = currentSound?.author ?: "No Author"
+                        soundName = states.currentSound?.title ?: "Now Playing",
+                        isPlaying = states.isPlaying,
+                        onPlayPauseClick = {
+                            viewModel.onEvent(GetSoundEvents.TogglePlayback)
+                        },
+                        soundThumbnailResId = states.currentSound?.thumbnail ?: 0,
+                        soundAuthor = states.currentSound?.author ?: "No Author"
                     )
                 }
                 BottomNavigationBar(navController = navController)

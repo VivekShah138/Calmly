@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import com.example.calmly.data.local.data_source.SoundDataSource
 import com.example.calmly.mapper.SoundMapper
 import com.example.calmly.presentation.core_components.AppTopBar
+import com.example.calmly.presentation.features.view_songs.events.GetSoundEvents
 import com.example.calmly.presentation.features.view_songs.viewmodel.GetSoundViewModel
 
 
@@ -21,16 +22,7 @@ fun SleepScreen(
     navController: NavController,
     viewModel: GetSoundViewModel
 ) {
-    val context = LocalContext.current
-    val currentPlayingSoundId by viewModel.currentPlayingSoundId.collectAsState()
-    val isPlaying by viewModel.isPlaying.collectAsState()
-
-    val sounds = SoundDataSource.sleepSounds.map {
-        SoundMapper.responseToDomain(
-            context = context, soundData = it
-        )
-    }
-
+    val states by viewModel.uiState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -42,11 +34,16 @@ fun SleepScreen(
         LazyColumn(
             modifier = Modifier.padding(innerPadding)
         ) {
-            items(sounds) { sound ->
+            items(states.sleepSounds) { sound ->
                 SoundCard(
                     sound = sound,
-                    isPlaying = (currentPlayingSoundId == sound.id && isPlaying),
-                    onPlayPauseClick = { viewModel.onPlayPauseClicked(sound) })
+                    isPlaying = (states.currentPlayingSoundId == sound.id && states.isPlaying),
+                    onPlayPauseClick = {
+                        viewModel.onEvent(
+                            GetSoundEvents.PlayPauseClicked(sound)
+                        )
+                    }
+                )
             }
         }
     }
