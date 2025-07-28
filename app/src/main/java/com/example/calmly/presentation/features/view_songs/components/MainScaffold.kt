@@ -1,6 +1,5 @@
 package com.example.calmly.presentation.features.view_songs.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
@@ -17,13 +16,12 @@ import com.example.calmly.data.local.data_source.SoundDataSource
 import com.example.calmly.mapper.SoundMapper
 import com.example.calmly.navigation.CalmNavHost
 import com.example.calmly.presentation.core_components.BottomNavigationBar
-import com.example.calmly.presentation.features.view_songs.viewmodel.SharedPlayerViewModel
-import com.example.calmly.ui.theme.DarkBackground
+import com.example.calmly.presentation.features.view_songs.viewmodel.GetSoundViewModel
 
 @Composable
 fun MainScaffold(
     navController: NavHostController,
-    viewModel: SharedPlayerViewModel ,
+    viewModel: GetSoundViewModel,
 ) {
 
     val context = LocalContext.current

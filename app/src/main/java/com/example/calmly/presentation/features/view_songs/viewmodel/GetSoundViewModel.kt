@@ -3,11 +3,13 @@ package com.example.calmly.presentation.features.view_songs.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.calmly.domain.local.model.Sound
+import com.example.calmly.domain.local.usecases.GetSoundUseCaseWrapper
 import com.example.calmly.player.SoundPlayerManager
 import kotlinx.coroutines.flow.*
 
-class SharedPlayerViewModel(
-    val playerManager: SoundPlayerManager
+class GetSoundViewModel(
+    val playerManager: SoundPlayerManager,
+    private val getSoundUseCaseWrapper: GetSoundUseCaseWrapper
 ) : ViewModel() {
 
     val currentPlayingSoundId: StateFlow<Int?> =
