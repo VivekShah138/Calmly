@@ -18,8 +18,6 @@ class SoundPlayerManager private constructor(private val context: Context) {
     private val _isPlaying = MutableStateFlow(false)
     val isPlaying: StateFlow<Boolean> = _isPlaying
 
-
-
     private val playbackStateReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action == MediaPlayerService.ACTION_PLAYBACK_STATE_CHANGED) {
