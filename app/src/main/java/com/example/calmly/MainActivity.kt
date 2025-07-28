@@ -17,12 +17,20 @@ import androidx.navigation.compose.rememberNavController
 import com.example.calmly.navigation.Screens
 import com.example.calmly.presentation.components.MeditationScreen
 import com.example.calmly.presentation.components.SleepScreen
+import com.example.calmly.presentation.viewmodel.SharedPlayerViewModel
 import com.example.calmly.ui.theme.CalmlyTheme
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
+
+    private val sharedPlayerViewModel: SharedPlayerViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        sharedPlayerViewModel.playerManager.registerReceiver()
+
         setContent {
             CalmlyTheme {
                 val navController = rememberNavController()
@@ -43,5 +51,10 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        sharedPlayerViewModel.playerManager.unregisterReceiver()
     }
 }

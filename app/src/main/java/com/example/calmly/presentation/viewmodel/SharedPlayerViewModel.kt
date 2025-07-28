@@ -3,27 +3,25 @@ package com.example.calmly.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.calmly.data.local.data_source.SoundDataSource
 import com.example.calmly.domain.local.model.Sound
 import com.example.calmly.player.SoundPlayerManager
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 
-class MeditationViewModel(
-     val playerManager: SoundPlayerManager
+class SharedPlayerViewModel(
+    val playerManager: SoundPlayerManager
 ) : ViewModel() {
 
-    val sounds: List<Sound> = SoundDataSource.meditationSounds
+    val currentPlayingSoundId: StateFlow<Int?> =
+        playerManager.currentPlayingSoundId.stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
-    val currentPlayingSoundId: StateFlow<Int?> = playerManager.currentPlayingSoundId
-        .stateIn(viewModelScope, SharingStarted.Lazily, null)
-
-    val isPlaying: StateFlow<Boolean> = playerManager.isPlaying
-        .stateIn(viewModelScope, SharingStarted.Lazily, false)
+    val isPlaying: StateFlow<Boolean> =
+        playerManager.isPlaying.stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     fun onPlayPauseClicked(sound: Sound) {
-        if (playerManager.currentPlayingSoundId.value == sound.id) {
+        val isSameSound = playerManager.currentPlayingSoundId.value == sound.id
+        if (isSameSound) {
             if (playerManager.isPlaying.value) {
                 playerManager.pause()
             } else {
