@@ -9,13 +9,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.navigation.NavController
 import com.example.calmly.data.local.data_source.SoundDataSource
 import com.example.calmly.mapper.SoundMapper
 import com.example.calmly.presentation.core_components.AppTopBar
 import com.example.calmly.presentation.core_components.BottomNavigationBar
 import com.example.calmly.presentation.features.view_songs.viewmodel.SharedPlayerViewModel
+import com.example.calmly.ui.theme.DarkBackground
 import org.koin.compose.viewmodel.koinViewModel
 
 
@@ -38,7 +41,7 @@ fun SleepScreen(
     Scaffold(
         topBar = {
             AppTopBar(
-                title = "Sleep"
+                title = "Sleep",
             )
         }
     ) { innerPadding ->

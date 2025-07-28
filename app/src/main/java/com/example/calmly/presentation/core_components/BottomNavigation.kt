@@ -20,6 +20,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.calmly.navigation.TOP_LEVEL_DESTINATION
 import com.example.calmly.navigation.TopLevelDestination
+import com.example.calmly.ui.theme.BottomBar
 
 @Composable
 fun BottomNavigationBar(

@@ -14,48 +14,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.calmly.R
-import com.example.calmly.domain.local.model.Sound
+import com.example.calmly.ui.theme.NowPlayingButton
+import com.example.calmly.ui.theme.NowPlayingButtonText
 
-@Composable
-fun NowPlayingBar2(
-    soundName: String,
-    isPlaying: Boolean,
-    onPlayPauseClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = soundName,
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.weight(1f),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-        IconButton(onClick = onPlayPauseClick) {
-            Icon(
-                imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                contentDescription = if (isPlaying) "Pause" else "Play"
-            )
-        }
-    }
-}
 
 @Composable
 fun NowPlayingBar(
     soundName: String,
-    soundThumbnailResId: Int,  // Add thumbnail resource id parameter
+    soundThumbnailResId: Int,
     isPlaying: Boolean,
     onPlayPauseClick: () -> Unit
 ) {
@@ -65,11 +38,11 @@ fun NowPlayingBar(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 4.dp)
+            .padding(horizontal = 8.dp, vertical = 4.dp),
     ) {
         Row(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.surface)
+                .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f))
                 .padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
