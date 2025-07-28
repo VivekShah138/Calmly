@@ -28,6 +28,7 @@ import com.example.calmly.ui.theme.NowPlayingButtonText
 @Composable
 fun NowPlayingBar(
     soundName: String,
+    soundAuthor: String,
     soundThumbnailResId: Int,
     isPlaying: Boolean,
     onPlayPauseClick: () -> Unit
@@ -59,14 +60,25 @@ fun NowPlayingBar(
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            // Sound title text (weight to take remaining space)
-            Text(
-                text = soundName,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.weight(1f),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp)
+            ) {
+                Text(
+                    text = soundName,
+                    style = MaterialTheme.typography.bodyLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = "by $soundAuthor",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
 
             Box(
                 modifier = Modifier
@@ -102,6 +114,7 @@ fun NowPlayingPreview(){
         onPlayPauseClick = {
 
         },
-        soundThumbnailResId = R.drawable.forest
+        soundThumbnailResId = R.drawable.forest,
+        soundAuthor = "Ava Linden"
     )
 }

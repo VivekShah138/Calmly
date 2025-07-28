@@ -22,7 +22,8 @@ object SoundMapper {
             resId = soundData.resId,
             thumbnail = soundData.thumbnail,
             duration = durationInSeconds,
-            fav = fav
+            fav = fav,
+            author = soundData.author
         )
     }
 

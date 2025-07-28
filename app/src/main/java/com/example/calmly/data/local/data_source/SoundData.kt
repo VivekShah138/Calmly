@@ -7,5 +7,6 @@ data class SoundData(
     val id: Int,
     val title: String,
     @RawRes val resId: Int,
-    @DrawableRes val thumbnail: Int
+    @DrawableRes val thumbnail: Int,
+    val author: String
 )

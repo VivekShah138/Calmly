@@ -53,7 +53,8 @@ fun MainScaffold(
                         soundName = currentSound?.title ?: "Now Playing",
                         isPlaying = isPlaying,
                         onPlayPauseClick = viewModel::togglePlayback,
-                        soundThumbnailResId = currentSound?.thumbnail ?: 0
+                        soundThumbnailResId = currentSound?.thumbnail ?: 0,
+                        soundAuthor = currentSound?.author ?: "No Author"
                     )
                 }
                 BottomNavigationBar(navController = navController)

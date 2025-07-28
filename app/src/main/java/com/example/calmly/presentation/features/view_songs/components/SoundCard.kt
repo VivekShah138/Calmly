@@ -27,6 +27,70 @@ import com.example.calmly.R
 import com.example.calmly.domain.local.model.Sound
 
 
+//@Composable
+//fun SoundCard(
+//    sound: Sound,
+//    isPlaying: Boolean,
+//    onPlayPauseClick: () -> Unit,
+//    onFavoriteClick: () -> Unit = {}
+//) {
+//    Row(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .background(MaterialTheme.colorScheme.surface)
+//            .clickable { onPlayPauseClick() }
+//            .padding(16.dp),
+//        horizontalArrangement = Arrangement.Center,
+//        verticalAlignment = Alignment.CenterVertically
+//    ) {
+//        Image(
+//            painter = painterResource(id = sound.thumbnail),
+//            contentDescription = sound.title,
+//            modifier = Modifier
+//                .size(64.dp)
+//                .clip(RoundedCornerShape(12.dp)),
+//            contentScale = ContentScale.Crop
+//        )
+//
+//        Spacer(modifier = Modifier.width(16.dp))
+//
+//        Column(
+//            modifier = Modifier.weight(1f),
+//            verticalArrangement = Arrangement.Center
+//        ) {
+//            Text(
+//                text = sound.title,
+//                style = MaterialTheme.typography.titleMedium,
+//            )
+//            DurationBadge(sound.duration)
+//        }
+//
+//        IconButton(onClick = onPlayPauseClick) {
+//            if (isPlaying) {
+//                Icon(
+//                    imageVector = Icons.Default.Pause,
+//                    contentDescription = "Pause",
+//                    modifier = Modifier.size(32.dp)
+//                )
+//            } else {
+//                Icon(
+//                    imageVector = Icons.Default.PlayArrow,
+//                    contentDescription = "Play",
+//                    modifier = Modifier.size(32.dp)
+//                )
+//            }
+//        }
+//
+//        IconButton(onClick = onFavoriteClick) {
+//            val icon = if (sound.fav) Icons.Filled.Favorite else Icons.Default.FavoriteBorder
+//            Icon(
+//                imageVector = icon,
+//                contentDescription = if (sound.fav) "Unfavorite" else "Favorite"
+//            )
+//        }
+//    }
+//}
+
 @Composable
 fun SoundCard(
     sound: Sound,
@@ -41,13 +105,13 @@ fun SoundCard(
             .clickable { onPlayPauseClick() }
             .padding(16.dp),
         horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically  
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             painter = painterResource(id = sound.thumbnail),
             contentDescription = sound.title,
             modifier = Modifier
-                .size(54.dp)
+                .size(64.dp)
                 .clip(RoundedCornerShape(12.dp)),
             contentScale = ContentScale.Crop
         )
@@ -62,6 +126,7 @@ fun SoundCard(
                 text = sound.title,
                 style = MaterialTheme.typography.titleMedium,
             )
+            AuthorBadge(sound.author)
             DurationBadge(sound.duration)
         }
 
@@ -102,7 +167,8 @@ fun SoundCardPreview(){
             resId =  R.raw.campfire,
             thumbnail = R.drawable.campfire,
             duration = 122,
-            fav = true
+            fav = true,
+            author = "Vivek Shah"
         ),
         isPlaying = true,
         onPlayPauseClick = {
