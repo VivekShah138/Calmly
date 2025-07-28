@@ -94,5 +94,10 @@ dependencies {
     // Optional: Media3 UI if you want player UI components
     implementation("androidx.media3:media3-ui:1.1.0")
 
+    implementation("androidx.media3:media3-session:1.1.0")
+
+    implementation ("androidx.media:media:1.6.0")
+
+
 
 }

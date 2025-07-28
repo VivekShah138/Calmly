@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 
 class SleepViewModel (
-    private val playerManager: SoundPlayerManager
+    val playerManager: SoundPlayerManager
 ) : ViewModel() {
 
     val sounds: List<Sound> = SoundDataSource.sleepSounds
@@ -19,9 +19,16 @@ class SleepViewModel (
     val currentPlayingSoundId: StateFlow<Int?> = playerManager.currentPlayingSoundId
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
+    val isPlaying: StateFlow<Boolean> = playerManager.isPlaying
+        .stateIn(viewModelScope, SharingStarted.Lazily, false)
+
     fun onPlayPauseClicked(sound: Sound) {
-        if (playerManager.isPlaying(sound.id)) {
-            playerManager.pause()
+        if (playerManager.currentPlayingSoundId.value == sound.id) {
+            if (playerManager.isPlaying.value) {
+                playerManager.pause()
+            } else {
+                playerManager.play(sound.resId, sound.id)
+            }
         } else {
             playerManager.play(sound.resId, sound.id)
         }
