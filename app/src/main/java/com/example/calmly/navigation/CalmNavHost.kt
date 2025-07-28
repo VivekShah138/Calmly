@@ -7,13 +7,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.calmly.presentation.features.view_songs.components.MeditationScreen
 import com.example.calmly.presentation.features.view_songs.components.SleepScreen
-import com.example.calmly.presentation.features.view_songs.viewmodel.SharedPlayerViewModel
+import com.example.calmly.presentation.features.view_songs.viewmodel.GetSoundViewModel
 
 @Composable
 fun CalmNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    viewModel: SharedPlayerViewModel,
+    viewModel: GetSoundViewModel,
     startDestination: Screens = Screens.MeditationScreen
 ){
     NavHost(

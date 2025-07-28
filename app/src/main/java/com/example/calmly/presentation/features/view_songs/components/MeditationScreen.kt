@@ -8,20 +8,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
 import androidx.navigation.NavController
 import com.example.calmly.data.local.data_source.SoundDataSource
 import com.example.calmly.mapper.SoundMapper
 import com.example.calmly.presentation.core_components.AppTopBar
-import com.example.calmly.presentation.features.view_songs.viewmodel.SharedPlayerViewModel
-import com.example.calmly.ui.theme.DarkBackground
+import com.example.calmly.presentation.features.view_songs.viewmodel.GetSoundViewModel
 
 @Composable
 fun MeditationScreen(
     navController: NavController,
-    viewModel: SharedPlayerViewModel
+    viewModel: GetSoundViewModel
 ) {
     val context = LocalContext.current
     val currentPlayingSoundId by viewModel.currentPlayingSoundId.collectAsState()
