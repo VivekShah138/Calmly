@@ -15,7 +15,8 @@ Watch the demo video here: [🎥 Calmly App Demo](https://drive.google.com/file/
 
 ## 📱 APK for Testing
 
-Download APK: [📦 Calmly_v1.0.apk](https://drive.google.com/file/d/1B8ncM6gn4JW_dGyEsTF8z7kB0r8oKOld/view?usp=drive_link)
+<!-- Download APK: [📦 Calmly_v1.0.apk](https://drive.google.com/file/d/1B8ncM6gn4JW_dGyEsTF8z7kB0r8oKOld/view?usp=drive_link) -->
+Download APK: [📦 Calmly_v1.0.apk](https://drive.google.com/file/d/1S0hHhSRfw0g4kdULVQFSeyh9zP3FPzig/view?usp=drive_link)
 
 ---
 
