@@ -1,5 +1,6 @@
 package com.example.calmly.presentation.features.view_songs.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.calmly.domain.local.model.Sound
@@ -84,7 +85,17 @@ class GetSoundViewModel(
                     )
                 }
 
-                _uiState.update { it.copy(lastPlayedSound = event.sound) }
+                _uiState.update {
+                    it.copy(
+                        lastPlayedSound = event.sound,
+                        isPlaying = playerManager.isPlaying.value
+                    )
+                }
+                Log.d("GetSoundViewModel", "Is Playing State: ${_uiState.value.isPlaying}")
+                Log.d(
+                    "GetSoundViewModel",
+                    "Is Playing playerManager: ${playerManager.isPlaying.value}"
+                )
             }
 
             is GetSoundEvents.TogglePlayback -> {
